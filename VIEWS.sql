@@ -9,11 +9,14 @@ ORDER BY 4 ASC, 1 DESC;
 
 -- Exemplo acima
 -- Proj abaixo
+use bancosangue;
 
-CREATE VIEW DOACOES (Nome, ABO, RH, Ultima_Doacao)
+CREATE VIEW DOACOES 
 As
 SELECT d.NOME, ts.ABO, ts.RH, dc.Data
-FROM Doador d, TesteAnemia ta, Entrevista e, Doacao dc, Imunohematologia i, TipoSangue ts,
+FROM Doador d, TesteAnemia ta, Entrevista e, Doacao dc, Imunohematologia i, TipoSangue ts
 WHERE ta.IDDoador = d.IDDoador AND e.IDTesteAnemia = ta.IDTesteAnemia AND dc.IDEntrevista = e.IDEntrevista AND i.IDDoacao = dc.IDDoacao
-     AND ts.IDTipoSangue = i.IDTipoSangue,
-GROUP BY ts.ABO, ts.RH, d.NOME, d.Data DESC;  
+     AND ts.IDTipoSangue = i.IDTipoSangue
+GROUP BY ts.ABO, ts.RH, d.NOME, dc.Data DESC;  
+
+select * from DOACOES;
