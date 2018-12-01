@@ -1,106 +1,124 @@
 CREATE TABLE TipoSangue (
-IDTipoSangue INTEGER PRIMARY KEY,
-RH CHAR(1),
-ABO VARCHAR(2)
+	IDTipoSangue INTEGER PRIMARY KEY,
+	RH CHAR(1),
+	ABO VARCHAR(2)
 );
 
 CREATE TABLE Imunohematologia (
-IDImunohematologia INTEGER PRIMARY KEY,
-Data DATETIME,
-TemCorpoIrregular VARCHAR(300),
-IDDoacao INTEGER,
-IDTipoSangue INTEGER,
-FOREIGN KEY(IDTipoSangue) REFERENCES TipoSangue (IDTipoSangue)
+	IDImunohematologia INTEGER PRIMARY KEY,
+	Data DATETIME,
+	TemCorpoIrregular VARCHAR(300),
+	IDDoacao INTEGER,
+	IDTipoSangue INTEGER,
+	FOREIGN KEY(IDTipoSangue) REFERENCES TipoSangue (IDTipoSangue)
+		ON UPDATE RESTRICT 
+        ON DELETE RESTRICT
 );
 
 CREATE TABLE ColetaAmostra (
-IDColetaAmostra INTEGER PRIMARY KEY,
-Data DATETIME,
-IDTriagemSorologica INTEGER,
-IDImunohematologia INTEGER,
-IDConsulta INTEGER,
-FOREIGN KEY(IDImunohematologia) REFERENCES Imunohematologia (IDImunohematologia)
+	IDColetaAmostra INTEGER PRIMARY KEY,
+	Data DATETIME,
+	IDTriagemSorologica INTEGER,
+	IDImunohematologia INTEGER,
+	IDConsulta INTEGER,
+	FOREIGN KEY(IDImunohematologia) REFERENCES Imunohematologia (IDImunohematologia)
+		ON UPDATE RESTRICT 
+        ON DELETE RESTRICT
 );
 
 CREATE TABLE Medico (
-IDMedico INTEGER PRIMARY KEY,
-Registro VARCHAR(10),
-Nome VARCHAR(150)
+	IDMedico INTEGER PRIMARY KEY,
+	Registro VARCHAR(10),
+	Nome VARCHAR(150)
+		ON UPDATE RESTRICT 
+        ON DELETE RESTRICT
 );
 
 CREATE TABLE TriagemSorologica (
-IDTriagemSorologica INTEGER PRIMARY KEY,
-AIDS TINYINT,
-Sifilis TINYINT,
-HepatiteB TINYINT,
-HepatiteC TINYINT,
-DoencaChagas TINYINT,
-HTLV TINYINT,
-Data DATETIME,
-IDDoacao INTEGER
+	IDTriagemSorologica INTEGER PRIMARY KEY,
+	AIDS TINYINT,
+	Sifilis TINYINT,
+	HepatiteB TINYINT,
+	HepatiteC TINYINT,
+	DoencaChagas TINYINT,
+	HTLV TINYINT,
+	Data DATETIME,
+	IDDoacao INTEGER
 );
 
 CREATE TABLE Endereco (
-IDEndereco INTEGER PRIMARY KEY,
-Numero INTEGER,
-Cidade VARCHAR(150),
-UF CHAR(2),
-Bairro VARCHAR(150),
-Rua VARCHAR(150)
+	IDEndereco INTEGER PRIMARY KEY,
+	Numero INTEGER,
+	Cidade VARCHAR(150),
+	UF CHAR(2),
+	Bairro VARCHAR(150),
+	Rua VARCHAR(150)
 );
 
 CREATE TABLE TesteAnemia (
-IDTesteAnemia INTEGER PRIMARY KEY,
-Data DATETIME,
-NivelHemoglobina VARCHAR(150),
-IDDoador INTEGER
+	IDTesteAnemia INTEGER PRIMARY KEY,
+	Data DATETIME,
+	NivelHemoglobina VARCHAR(150),
+	IDDoador INTEGER
 );
 
 CREATE TABLE Entrevista (
-IDEntrevista INTEGER PRIMARY KEY,
-Data DATETIME,
-Apto TINYINT,
-IDTesteAnemia INTEGER,
-FOREIGN KEY(IDTesteAnemia) REFERENCES TesteAnemia (IDTesteAnemia)
+	IDEntrevista INTEGER PRIMARY KEY,
+	Data DATETIME,
+	Apto TINYINT,
+	IDTesteAnemia INTEGER,
+	FOREIGN KEY(IDTesteAnemia) REFERENCES TesteAnemia (IDTesteAnemia)
+		ON UPDATE RESTRICT 
+        ON DELETE RESTRICT
 );
 
 CREATE TABLE SangueApto (
-IDSangueApto INTEGER PRIMARY KEY,
-DataVencimento DATETIME,
-IDDoacao INTEGER,
-IDTipoSangue INTEGER,
-FOREIGN KEY(IDTipoSangue) REFERENCES TipoSangue (IDTipoSangue)
+	IDSangueApto INTEGER PRIMARY KEY,
+	DataVencimento DATETIME,
+	IDDoacao INTEGER,
+	IDTipoSangue INTEGER,
+	FOREIGN KEY(IDTipoSangue) REFERENCES TipoSangue (IDTipoSangue)
+		ON UPDATE RESTRICT 
+        ON DELETE RESTRICT
 );
 
 CREATE TABLE Doador (
-IDDoador INTEGER PRIMARY KEY,
-Nome VARCHAR(150),
-Sexo CHAR(1),
-RG VARCHAR(20),
-NomeMae VARCHAR(150),
-NomePai VARCHAR(150),
-DataNascimento DATETIME,
-IDEndereco INTEGER,
-FOREIGN KEY(IDEndereco) REFERENCES Endereco (IDEndereco)
+	IDDoador INTEGER PRIMARY KEY,
+	Nome VARCHAR(150),
+	Sexo CHAR(1),
+	RG VARCHAR(20),
+	NomeMae VARCHAR(150),
+	NomePai VARCHAR(150),
+	DataNascimento DATETIME,
+	IDEndereco INTEGER,
+	FOREIGN KEY(IDEndereco) REFERENCES Endereco (IDEndereco)
+		ON UPDATE RESTRICT 
+        ON DELETE RESTRICT
 );
 
 CREATE TABLE Consulta (
-IDConsulta INTEGER PRIMARY KEY,
-Data DATETIME,
-Descricao VARCHAR(300),
-IDMedico INTEGER,
-IDDoador INTEGER,
-IDDoacao INTEGER,
-FOREIGN KEY(IDMedico) REFERENCES Medico (IDMedico),
-FOREIGN KEY(IDDoador) REFERENCES Doador (IDDoador)
+	IDConsulta INTEGER PRIMARY KEY,
+	Data DATETIME,
+	Descricao VARCHAR(300),
+	IDMedico INTEGER,
+	IDDoador INTEGER,
+	IDDoacao INTEGER,
+	FOREIGN KEY(IDMedico) REFERENCES Medico (IDMedico)
+		ON UPDATE RESTRICT 
+        ON DELETE RESTRICT,
+	FOREIGN KEY(IDDoador) REFERENCES Doador (IDDoador)
+		ON UPDATE RESTRICT 
+        ON DELETE RESTRICT
 );
 
 CREATE TABLE Doacao (
-IDDoacao INTEGER PRIMARY KEY,
-Data DATETIME,
-QtdSangue NUMERIC(5,2),
-IDEntrevista INTEGER,
-FOREIGN KEY(IDEntrevista) REFERENCES Entrevista (IDEntrevista)
+	IDDoacao INTEGER PRIMARY KEY,
+	Data DATETIME,
+	QtdSangue NUMERIC(5,2),
+	IDEntrevista INTEGER,
+	FOREIGN KEY(IDEntrevista) REFERENCES Entrevista (IDEntrevista)
+		ON UPDATE RESTRICT 
+        ON DELETE RESTRICT
 );
 
 ALTER TABLE Imunohematologia ADD FOREIGN KEY(IDDoacao) REFERENCES Doacao (IDDoacao);
