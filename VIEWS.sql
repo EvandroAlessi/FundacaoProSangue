@@ -13,10 +13,11 @@ ORDER BY 4 ASC, 1 DESC;
 CREATE VIEW DOACOES (Nome, ABO, RH, Ultima_Doacao)
 As
 SELECT d.NOME, ts.ABO, ts.RH, dc.Data
-FROM Doador d, TesteAnemia ta, Entrevista e, Doacao dc, Imunohematologia i, TipoSangue ts,
+FROM Doador d, TesteAnemia ta, Entrevista e, Doacao dc, Imunohematologia i, TipoSangue ts
 WHERE ta.IDDoador = d.IDDoador AND e.IDTesteAnemia = ta.IDTesteAnemia AND dc.IDEntrevista = e.IDEntrevista AND i.IDDoacao = dc.IDDoacao
-     AND ts.IDTipoSangue = i.IDTipoSangue,
-GROUP BY ts.ABO, ts.RH, d.NOME, d.Data DESC;  
+     AND ts.IDTipoSangue = i.IDTipoSangue
+GROUP BY ts.ABO, ts.RH, d.NOME, dc.Data DESC;  
+
 
 
 CREATE VIEW CARTEIRINHA (Nome, Data_Doacao, ABO, RH, AntiCorpo_Irregular, HepatiteB, HepatiteC, Chagas, Sifilis, AIDS, HTLV)
@@ -29,3 +30,11 @@ GROUP BY ts.ABO, ts.RH, d.NOME, d.Data DESC;
 
 /*Os testes descritos são realizados a cada doação, e os resultados serão impressos na Carteirinha do Doador.
 Caso haja alguma alteração no resultado, o doador será comunicado (a) e talvez seja necessário repetir os exames.*/
+
+
+/* A segunda deve gerar a quantidade de doações por tipo sanguíneo,
+ ordenando da menor para a maior quantidade no período de 5 anos até a data atual.*/
+
+SELECT ts.ABO, ts.RH, CONT(*) as QUANT_DOACOES
+FROM TipoSangue ts, Imunohematologia i, Doacao d
+WHERE ts.IDTipoSangue = i.IDTipoSangue, d.IDDoacao = i.IDDoacao
