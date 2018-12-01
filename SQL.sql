@@ -44,15 +44,6 @@ CREATE TABLE TriagemSorologica (
 	IDDoacao INTEGER
 );
 
-CREATE TABLE Endereco (
-	IDEndereco INTEGER PRIMARY KEY,
-	Numero INTEGER,
-	Cidade VARCHAR(150),
-	UF CHAR(2),
-	Bairro VARCHAR(150),
-	Rua VARCHAR(150)
-);
-
 CREATE TABLE TesteAnemia (
 	IDTesteAnemia INTEGER PRIMARY KEY,
 	Data DATETIME,
@@ -88,10 +79,19 @@ CREATE TABLE Doador (
 	NomeMae VARCHAR(150),
 	NomePai VARCHAR(150),
 	DataNascimento DATETIME,
-	IDEndereco INTEGER,
-	FOREIGN KEY(IDEndereco) REFERENCES Endereco (IDEndereco)
-		ON UPDATE RESTRICT 
-        ON DELETE RESTRICT
+	IDEndereco INTEGER
+);
+
+CREATE TABLE Endereco (
+	IDEndereco INTEGER PRIMARY KEY,
+	Numero INTEGER,
+	Cidade VARCHAR(150),
+	UF CHAR(2),
+	Bairro VARCHAR(150),
+	Rua VARCHAR(150),
+    FOREIGN KEY(IDDoador) REFERENCES Doador (IDDoador)
+		ON UPDATE CASCADE 
+        ON DELETE CASCADE
 );
 
 CREATE TABLE Consulta (
